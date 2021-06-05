@@ -14,7 +14,6 @@ export const LoginPage = () => {
         setErrorText('');
         accountAPI.LoginUser(values.username, values.email, values.password).then((r) => {
             localStorage.setItem("token", r.access_token);
-            localStorage.setItem("email", values.email);
 
             http.resetToken(r.access_token);
             history.push('/');
