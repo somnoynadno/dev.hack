@@ -12,6 +12,10 @@ services:
     restart: always
     depends_on:
       - grafana
+      - currency_api
+      - transaction_api
+      - enum_api
+      - document_api
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
@@ -51,7 +55,7 @@ services:
     environment:
         - REDIS_HOST=currency_redis
     depends_on:
-          - currency_redis
+        - currency_redis
   
   document_api:
     build: services/Backend/DocumentAPI
@@ -75,10 +79,24 @@ services:
       - default
       - nginx_proxy
     healthcheck:
-      test: curl --fail -s -X GET http://localhost:8080/api/ping || exit 1
+      test: curl --fail -s -X GET http://localhost:4444/api/ping || exit 1
       interval: 5m
       timeout: 2s
       retries: 3
+
+  transaction_api:
+    build: services/Backend/TransactionAPI
+    container_name: backend
+    depends_on:
+      - transaction_postgres
+    env_file:
+      - services/Backend/TransactionAPI/.env
+    ports:
+      - 5555:5555
+    restart: always
+    networks:
+      - default
+      - transaction_network
 
   #############
   # Databases #
@@ -92,6 +110,20 @@ services:
     command: [ "redis-server", "--appendonly", "yes" ]
     volumes:
       - redis_data:/data
+
+  transaction_postgres:
+    image: postgres:12
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=transaction_db
+      - POSTGRES_USER=postgres
+    volumes:
+      - transaction_db_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - transaction_network
       
   #################
   # Frontend Nodes #
@@ -125,7 +157,7 @@ services:
     environment:
       - KAFKA_BROKER_ID=1
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://95.182.120.116:9092
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:
@@ -172,6 +204,7 @@ volumes:
   grafana_data:
   prometheus_data:
   redis_data:
+  transaction_db_data:
 
 
 networks:
@@ -179,4 +212,6 @@ networks:
   nginx_proxy:
     internal: true
   currency_network:
-      internal: true
+    internal: true
+  transaction_network:
+    internal: true

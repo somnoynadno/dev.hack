@@ -6,7 +6,7 @@ from kafka import KafkaConsumer
 # To consume latest messages and auto-commit offsets
 consumer = KafkaConsumer('my-topic',
                          group_id='my-group',
-                         bootstrap_servers=['localhost:9092'])
+                         bootstrap_servers=['somnoynadno.ru:9092'])
 
 for message in consumer:
     # message value and key are raw bytes -- decode if necessary!
