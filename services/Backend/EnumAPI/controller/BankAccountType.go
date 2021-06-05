@@ -18,8 +18,8 @@ type BankAccountType struct {
 var bankAccountTypes = []BankAccountType{
 	{ID: 1, Name: "DepositAccount", RusName: "Депозитный счёт"},
 	{ID: 2, Name: "CreditAccount", RusName: "Кредитный счёт"},
-	{ID: 2, Name: "BrokerAccount", RusName: "Брокерский счёт"},
-	{ID: 3, Name: "CompanyAccount", RusName: "Счёт для юридеческого лица"},
+	{ID: 3, Name: "BrokerAccount", RusName: "Брокерский счёт"},
+	{ID: 4, Name: "CompanyAccount", RusName: "Счёт для юридеческого лица"},
 }
 
 var BankAccountTypeRetrieve = func(w http.ResponseWriter, r *http.Request) {
