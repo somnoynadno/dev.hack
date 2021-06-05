@@ -67,7 +67,7 @@ services:
     build: services/Frontend/WebPanel
     container_name: web_panel
     ports:
-      8030:3000
+      - 8030:3000
     restart: always
     networks:
       - default
