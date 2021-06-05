@@ -1,16 +1,73 @@
 version: "3"
 
 services:
+  #################
+  # Reverse-Proxy #
+  #################
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    hostname: nginx
+    restart: always
+    depends_on:
+      - grafana
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 80:80
+      - 443:443
+      - 8080:8080
+    networks:
+      - default
+      - nginx_proxy
+
+  nginx-prometheus-exporter:
+    image: nginx/nginx-prometheus-exporter:0.8.0
+    container_name: nginx_metrics
+    entrypoint: ["/usr/bin/exporter", "-nginx.scrape-uri", "http://nginx:8080/stub_status"]
+    restart: always
+    depends_on:
+      - nginx
+    ports:
+      - 9113:9113
+    networks:
+      - nginx_proxy
+
+  #################
+  # Backend Nodes #
+  #################
+
+  # Goes here
+
+  #################
+  # Frontend Nodes #
+  #################
+
+  web_panel:
+    build: services/Frontend/WebPanel
+    container_name: web_panel
+    ports:
+      8030:3000
+    restart: always
+    networks:
+      - default
+      - nginx_proxy
+
+  ###################
+  # Event Streaming #
+  ###################
   zookeeper:
     image: 'bitnami/zookeeper:latest'
     ports:
-      - '2181:2181'
+      - 2181:2181
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+
   kafka:
     image: 'bitnami/kafka:latest'
     ports:
-      - '9092:9092'
+      - 9092:9092
     environment:
       - KAFKA_BROKER_ID=1
       - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092
@@ -19,3 +76,50 @@ services:
       - ALLOW_PLAINTEXT_LISTENER=yes
     depends_on:
       - zookeeper
+
+  ##############
+  # Monitoring #
+  ##############
+
+  prometheus:
+    image: prom/prometheus:v2.1.0
+    hostname: prometheus
+    restart: always
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+    ports:
+      - 9080:9090
+    networks:
+      - default
+      - nginx_proxy
+
+  grafana:
+    image: grafana/grafana:7.5.7-ubuntu
+    container_name: grafana
+    hostname: grafana
+    ports:
+      - 3000:3000
+    restart: always
+    depends_on:
+      - kafka
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - nginx_proxy
+
+
+volumes:
+  grafana_data:
+  prometheus_data:
+
+
+networks:
+  default:
+  nginx_proxy:
+    internal: true
