@@ -151,6 +151,7 @@ services:
     volumes:
       - mongo_data:/data/db
     networks:
+      default:
       nginx_proxy:
   
   account_postgres:

@@ -28,4 +28,5 @@ scrape_configs:
     static_configs:
         - targets: ['prometheus:9090', 'nginx_metrics:9113',
                     'enum_api:4444', 'currency_api:6666',
-                    'transaction_api:5555', 'document_api:7777']
+                    'transaction_api:5555', 'document_api:7777',
+                    'account_api:1111', 'bank_account_api:2222']
