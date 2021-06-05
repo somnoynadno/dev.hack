@@ -9,4 +9,4 @@ RUN pip install gunicorn gevent
 
 COPY . .
 
-CMD [ "gunicorn", "--bind", "0.0.0.0:6666", "--worker-class", "gevent", "--worker-connections", "1024", "main:app"]
+CMD [ "gunicorn", "--bind", "0.0.0.0:6666", "--worker-class", "gevent", "--worker-connections", "1024", "server:app"]
