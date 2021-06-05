@@ -27,16 +27,18 @@ dic = {
 
 
 def send():
+    global trans_id
     val = json.dumps(dic).encode()
-    for i in range(4):
+    for i in range(10):
         producer.send('AwaitingForReceiptGeneration',  val, key=trans_id)
 
     producer.flush()
     print("ok")
 
 def wait_for_success():
+    global trans_id
     consumer = KafkaConsumer("TransactionSucceed",
-                         bootstrap_servers=['somnoynadno.ru:9092'], consumer_timeout_ms=5000)
+                         bootstrap_servers=['somnoynadno.ru:9092'], consumer_timeout_ms=10000)
     for message in consumer:
         trans_key = message.key
         if trans_key == trans_id:
