@@ -24,14 +24,14 @@ def _get_currency_value(cur_code):
     #return int(temp_dict[cur_code])
     return int(r.get(cur_code).decode())
 
-def convert_currency_to_gold(cur_code, value):
+def convert_currency_to_gold(cur_code, cur_value):
     cur_price_int = _get_currency_value(cur_code)
-    cur_value_int = int(value * cur_price_int)
+    cur_value_int = int(cur_value * accuracy * cur_price_int)
     return cur_value_int / accuracy
 
-def convert_gold_to_currency(cur_code, value):
+def convert_gold_to_currency(cur_code, gold_value):
     cur_price_int = _get_currency_value(cur_code)
-    cur_value_int = int(value * accuracy / cur_price_int)
+    cur_value_int = int(gold_value * accuracy / cur_price_int)
     return cur_value_int
 
 def convert_currency_to_currency(cur_code_from, cur_code_to, value):

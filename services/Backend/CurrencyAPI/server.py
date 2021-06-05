@@ -5,6 +5,7 @@ import redis_client
 app = Flask(__name__)
 
 # get json dict {"EUR":12.2, "RUB":3.1} and so on
+# it means that you can by EUR using 12.2 gold pieces
 @app.route('/init', methods=["POST"])
 def init_currency_db():
     try:
