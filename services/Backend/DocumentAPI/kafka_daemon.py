@@ -13,7 +13,7 @@ def create_document_from_message(trans_dict):
     if trans_dict["json_ver"] != 2:
         raise Exception("Wrong json ver")
 
-    filename = docx_controller.generate_random_filename()
+    filename = trans_dict["docx_filepath"]
     
     account_from = trans_dict["account_id_from"]
     account_to = trans_dict["account_id_to"]
@@ -25,8 +25,6 @@ def create_document_from_message(trans_dict):
     status = trans_dict["status"]
 
     docx_controller.create_operation_status_docx(account_from, account_to, currency_code_from, currency_code_to, currency_value_from, currency_value_to, status, comission, filename)
-    
-    return filename
 
 for message in consumer:
     trans_key = message.key
@@ -34,9 +32,7 @@ for message in consumer:
     print(f"new transaction got: {trans_dict}")
     try:
         trans_dict["status"] = "Успешная обработка"
-        filename = create_document_from_message(trans_dict)
-        trans_dict["docx_filepath"]=filename
-        print(filename)
+        create_document_from_message(trans_dict)
         trans_dict["status"] = "TransactionSucceed"
         producer.send(success_topic, key=trans_key, value=json.dumps(trans_dict).encode())
     except Exception:
