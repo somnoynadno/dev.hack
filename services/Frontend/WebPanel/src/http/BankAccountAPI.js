@@ -13,6 +13,14 @@ export class BankAccountAPI {
                 .catch(error => reject(error))
         });
     }
+
+    FindBankAccountByID(bankAccountID) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${APIs["BankAccountAPI"]}/find_account?id=${bankAccountID}`)
+                .then(response => resolve(response.data))
+                .catch(error => reject(error))
+        });
+    }
 }
 
 export const bankAccountAPI = new BankAccountAPI();

@@ -1,6 +1,7 @@
 import React from 'react';
 import {Redirect, Route, Switch, withRouter} from "react-router-dom";
 import {LoginPage} from "./view/pages/LoginPage";
+import {IndexPage} from "./view/pages/IndexPage";
 
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
         <Switch>
             <Route exact path='/login' component={LoginPage}/>
             <Route exact path='/logout' component={Logout}/>
+            <Route path='/' component={IndexPage}/>
         </Switch>
     );
 }
