@@ -4,7 +4,14 @@ Bank core processing in a microservice architecture.
 
 ## Services
 
-*Will be here very soon*
+- **AccountAPI** - users and administrators
+- **BankAccountAPI** - main money storage
+- **CurrencyAPI** - currency conversions
+- **DocumentAPI** - receipt generator
+- **EnumAPI** - all other entities as mockups
+- **RollbackService** - operations cancellation
+- **TransactionAPI** - banking core operations
+- **WebPanel** - main frontend (SPA-application)
 
 ## Deployment
 
