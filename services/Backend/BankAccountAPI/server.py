@@ -1,10 +1,24 @@
 from postgres_client import DatabaseClient
 from flask import Flask, jsonify, request
 
+from flask_cors import CORS
+from flask_cors import cross_origin
+
 app = Flask(__name__)
+cors = CORS(app)
+
+
+from prometheus_client import make_wsgi_app
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+
+# Add prometheus wsgi middleware to route /metrics requests
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
+    '/metrics': make_wsgi_app()
+})
 
 
 @app.route('/new_account', methods=["POST"])
+@cross_origin()
 def new_account():
     json = request.get_json()
     account_id = json['account_id']
@@ -16,6 +30,7 @@ def new_account():
 
 
 @app.route('/find_account', methods=["GET"])
+@cross_origin()
 def find_account():
     id = int(request.args.get('id'))
     with DatabaseClient() as db:
@@ -26,6 +41,7 @@ def find_account():
 
 
 @app.route('/bank_accounts', methods=["GET"])
+@cross_origin()
 def bank_accounts():
     id = int(request.args.get('id'))
     with DatabaseClient() as db:

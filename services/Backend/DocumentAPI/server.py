@@ -2,9 +2,24 @@ import json
 from flask import Flask, jsonify, request, send_from_directory
 import docx_controller
 
+from flask_cors import CORS
+from flask_cors import cross_origin
+
 app = Flask(__name__)
+cors = CORS(app)
+
+
+from prometheus_client import make_wsgi_app
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+
+# Add prometheus wsgi middleware to route /metrics requests
+app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
+    '/metrics': make_wsgi_app()
+})
+
 
 @app.route('/get_operation_status_doc')
+@cross_origin()
 def get_doc():
     filename = request.args.get('filename')
     return send_from_directory(docx_controller.UPLOAD_FOLDER, filename)
