@@ -21,7 +21,7 @@ To deploy your own service:
 
 ```
 {
-  "json_ver": 1.0,
+  "json_ver": 1,
   "account_id_from": "",
   "account_id_to": "",
   "currency_code_from": "",
