@@ -9,4 +9,6 @@ RUN pip install gunicorn gevent
 
 COPY . .
 
+RUN ["python3", "kafka-daemon.py"]
+
 CMD [ "gunicorn", "--bind", "0.0.0.0:7777", "--worker-class", "gevent", "--worker-connections", "1024", "server:app"]
