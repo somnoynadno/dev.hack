@@ -7,12 +7,12 @@ redis_port = os.environ.get("REDIS_PORT", "6379")
 r = redis.StrictRedis(host=redis_host, port=redis_port, db=0)
 
 accuracy = 10**2
-comission_part = 100
+comission_part = 0.01
 
 #temp_dict = {}
 
 def get_bank_comission(cur_code_from, cur_code_to, value):
-    return convert_currency_to_gold(cur_code_from, value)//comission_part
+    return int(convert_currency_to_gold(cur_code_from, value)*comission_part*accuracy)//accuracy
 
 def set_currency_value_in_gold(cur_code, cur_price):
     # we got float, but need keep some signs after comma
