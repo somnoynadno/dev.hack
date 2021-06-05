@@ -1,4 +1,4 @@
-from services.Backend.AccountAPI.postgres_client import DatabaseClient
+from postgres_client import DatabaseClient
 from flask import Flask, jsonify, request
 from hashlib import sha256
 
