@@ -51,5 +51,15 @@ def bank_accounts():
     return jsonify(accounts)
 
 
+@app.route('/add_money', methods=["POST"])
+@cross_origin()
+def bank_accounts():
+    id = int(request.args.get('id'))
+    delta = int(request.args.get('delta'))
+    with DatabaseClient() as db:
+        db.update_balance(delta, id)
+    return "ok"
+
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port="6666", debug=True)

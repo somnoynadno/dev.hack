@@ -6,7 +6,7 @@ postgres_host = os.environ.get('POSTGRES_HOST', 'localhost')
 
 class DatabaseClient:
     def __init__(self):
-        pass
+        self.create_table()
 
     def __enter__(self):
         self.conn = psycopg2.connect(dbname='bank_account_db', user='postgres',
@@ -44,4 +44,16 @@ currency_name varchar(64) not null);""")
     def create_account(self, account_id, type_id, currency_name):
         self.cursor.execute(
             'INSERT INTO bank_accounts (account_id, balance, type_id, currency_name) VALUES (%s, 100, %s, %s)', (account_id, type_id, currency_name))
+        self.conn.commit()
+    
+    def set_balance(self, balance, account_id):
+        self.cursor.execute(
+            'update bank_accounts set balance=%s where account_id=%s', ((balance, account_id)))
+        self.conn.commit()
+    
+    def update_balance(self, delta, account_id):
+        old_balance = get_account(account_id)[3]
+        balance = old_balance + dela
+        self.cursor.execute(
+            'update bank_accounts set balance=%s where account_id=%s', ((balance, account_id)))
         self.conn.commit()
