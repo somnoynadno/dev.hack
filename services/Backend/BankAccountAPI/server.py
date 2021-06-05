@@ -1,4 +1,3 @@
-from postgres_client import DatabaseClient
 from flask import Flask, jsonify, request
 
 from flask_cors import CORS
@@ -16,48 +15,29 @@ app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
     '/metrics': make_wsgi_app()
 })
 
+admin = {"account_id":"ADMIN_ACCOUNT","bank_account_type_id":0,"balance":0,"currency_name":"EUR"}
+user = {"account_id":"USER_ACCOUNT","bank_account_type_id":0,"balance":100,"currency_name":"EUR"}
 
-@app.route('/new_account', methods=["POST"])
-@cross_origin()
-def new_account():
-    json = request.get_json()
-    account_id = json['account_id']
-    type_id = json['bank_account_type_id']
-    currency_name = json['currency_name']
-    with DatabaseClient() as db:
-        db.create_account(account_id, type_id, currency_name)
-    return jsonify(status='ok'), 201
-
-
-@app.route('/find_account', methods=["GET"])
+@app.route('/get_account', methods=["GET"])
 @cross_origin()
 def find_account():
-    id = int(request.args.get('id'))
-    with DatabaseClient() as db:
-        account = db.get_account(id)
-    if not account:
-        return jsonify(error='no such account'), 404
-    return jsonify(account)
-
-
-@app.route('/bank_accounts', methods=["GET"])
-@cross_origin()
-def bank_accounts():
-    id = int(request.args.get('id'))
-    with DatabaseClient() as db:
-        accounts = db.get_accounts_by_parent_id(id)
-    if not accounts:
-        return jsonify(error='no bank accounts for this account'), 404
-    return jsonify(accounts)
+    acc_id = request.args.get('account_id')
+    if acc_id == "ADMIN_ACCOUNT":
+        return jsonify(admin)
+    if acc_id == "USER_ACCOUNT":
+        return jsonify(user)
+    return "doesn't exists"
 
 
 @app.route('/add_money', methods=["POST"])
 @cross_origin()
 def add_money():
-    id = int(request.args.get('id'))
+    id = request.args.get('id')
     delta = int(request.args.get('delta'))
-    with DatabaseClient() as db:
-        db.update_balance(delta, id)
+    if acc_id == "ADMIN_ACCOUNT":
+        admin["balance"] += delta
+    if acc_id == "USER_ACCOUNT":
+        user["balance"] += delta
     return "ok"
 
 
