@@ -38,3 +38,15 @@ def convert_currency_to_currency(cur_code_from, cur_code_to, value):
     gold_value = convert_currency_to_gold(cur_code_from, value)
     return convert_gold_to_currency(cur_code_to, value), get_bank_comission(cur_code_from, cur_code_to, value)
 
+def get_all_currency_prices():
+    ans = {}
+    for key in r.scan_iter():
+        ans[key.decode()] = _get_currency_value(key.decode())
+    return ans
+
+def get_keys():
+    ans = []
+    for key in r.scan_iter():
+        ans.append(key.decode())
+    return ans
+

@@ -47,5 +47,15 @@ def convert_currency_to_currency():
     new_cur_value, comission = redis_client.convert_currency_to_currency(cur_code_from, cur_code_to, cur_value)
     return jsonify({"converted":new_cur_value, "comission":comission})
 
+@app.route('/get_currency_dict')
+def get_dict():
+    return jsonify(redis_client.get_all_currency_prices())
+
+@app.route('/get_currency_list')
+def get_list():
+    return jsonify(redis_client.get_keys())
+
+
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port="6666", debug=True)
