@@ -69,8 +69,6 @@ services:
       - bank_account_network
     environment:
         - POSTGRES_HOST=bank_account_postgres
-    depends_on:
-        - bank_account_postgres
 
   currency_api:
     build: services/Backend/CurrencyAPI
