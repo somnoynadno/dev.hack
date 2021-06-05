@@ -87,16 +87,11 @@ services:
   transaction_api:
     build: services/Backend/TransactionAPI
     container_name: backend
-    depends_on:
-      - transaction_postgres
-    env_file:
-      - services/Backend/TransactionAPI/.env
     ports:
       - 5555:5555
     restart: always
     networks:
       - default
-      - transaction_network
 
   #############
   # Databases #
@@ -110,20 +105,6 @@ services:
     command: [ "redis-server", "--appendonly", "yes" ]
     volumes:
       - redis_data:/data
-
-  transaction_postgres:
-    image: postgres:12
-    expose:
-      - 5432
-    environment:
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=transaction_db
-      - POSTGRES_USER=postgres
-    volumes:
-      - transaction_db_data:/var/lib/postgresql/data
-    restart: always
-    networks:
-      - transaction_network
       
   #################
   # Frontend Nodes #
@@ -204,7 +185,6 @@ volumes:
   grafana_data:
   prometheus_data:
   redis_data:
-  transaction_db_data:
 
 
 networks:
@@ -212,6 +192,4 @@ networks:
   nginx_proxy:
     internal: true
   currency_network:
-    internal: true
-  transaction_network:
     internal: true
