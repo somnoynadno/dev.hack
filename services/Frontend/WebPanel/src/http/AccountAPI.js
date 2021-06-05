@@ -14,14 +14,6 @@ export class AccountAPI {
                 .catch(error => reject(error))
         });
     }
-
-    GetUserBankAccounts() {
-        return new Promise((resolve, reject) => {
-            axios.get(`${APIs["AccountAPI"]}/bank_accounts`)
-                .then(response => resolve(response.data))
-                .catch(error => reject(error))
-        });
-    }
 }
 
 export const accountAPI = new AccountAPI();

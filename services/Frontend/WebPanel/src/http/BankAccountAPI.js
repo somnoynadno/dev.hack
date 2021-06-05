@@ -21,6 +21,14 @@ export class BankAccountAPI {
                 .catch(error => reject(error))
         });
     }
+
+    GetUserBankAccounts() {
+        return new Promise((resolve, reject) => {
+            axios.get(`${APIs["BankAccountAPI"]}/bank_accounts`)
+                .then(response => resolve(response.data))
+                .catch(error => reject(error))
+        });
+    }
 }
 
 export const bankAccountAPI = new BankAccountAPI();
