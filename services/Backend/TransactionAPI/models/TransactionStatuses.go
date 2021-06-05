@@ -8,8 +8,9 @@ func init() {
 	HubMap["Ожидание подтверждения пользователем"] = "UserConfirmationRequired"
 	HubMap["Ожидание СМС-подтверждения"] = "SMSConfirmationRequired"
 	HubMap["Ожидание подтверждения сотрудником банка"] = "BankEmployeeConfirmationRequired"
-	HubMap["Ожидание транзакции инициатора"] = "AwaitingForSenderTransaction"
-	HubMap["Ожидание транзакции получателя"] = "AwaitingForReceiverTransaction"
+	HubMap["Транзакция подтверждена"] = "TransactionConfirmed"
+	HubMap["Ожидание перевода инициатора"] = "AwaitingForSenderTransaction"
+	HubMap["Ожидание перевода получателя"] = "AwaitingForReceiverTransaction"
 	HubMap["Ожидание создание чека"] = "AwaitingForReceiptGeneration"
 	// Success
 	HubMap["Успешная обработка"] = "TransactionSucceed"
@@ -19,5 +20,5 @@ func init() {
 	// Error/Cancellation
 	HubMap["Транзакция отменена пользователем"] = "TransactionCancelledByUser"
 	HubMap["Транзакция отклонена банком"] = "TransactionDeclinedByBank"
-	HubMap["Транзакция не удалась"] = "TransactionFailed"
+	HubMap["Произошла ошибка в транзакции"] = "TransactionFailed"
 }

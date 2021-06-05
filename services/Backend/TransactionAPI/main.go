@@ -20,6 +20,12 @@ func main() {
 
 	router.HandleFunc("/api/{any}", u.HandleOptions).Methods(http.MethodOptions)
 	router.HandleFunc("/api/{any1}/{any2}", u.HandleOptions).Methods(http.MethodOptions)
+	router.HandleFunc("/api/{any1}/{any2}/{any3}", u.HandleOptions).Methods(http.MethodOptions)
+	router.HandleFunc("/api/{any1}/{any2}/{any3}/{any4}", u.HandleOptions).Methods(http.MethodOptions)
+
+	router.HandleFunc("/api/register_transaction", controller.RegisterTransaction).Methods(http.MethodPost)
+	router.HandleFunc("/api/transaction/{id}/confirm/{code}", controller.ConfirmTransaction).Methods(http.MethodPost)
+
 
 	router.HandleFunc("/api/transaction", controller.CreateTransaction).Methods(http.MethodPost)
 	router.HandleFunc("/api/transaction/{id}", controller.GetTransactionByID).Methods(http.MethodGet)
