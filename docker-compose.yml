@@ -52,15 +52,6 @@ services:
         - REDIS_HOST=currency_redis
     depends_on:
           - currency_redis
-
-  currency_redis:
-    image: redis
-    restart: "always"
-    networks:
-      - currency_network
-    command: [ "redis-server", "--appendonly", "yes"]
-    volumes:
-      - redis_data:/data
   
   document_api:
     build: services/Backend/DocumentAPI
@@ -73,6 +64,34 @@ services:
       - nginx_proxy
     environment:
       - UPLOAD_FOLDER=/tmp/
+
+  enum_api:
+    build: services/Backend/EnumAPI
+    container_name: enum_api
+    ports:
+      - 4444:4444
+    restart: always
+    networks:
+      - default
+      - nginx_proxy
+    healthcheck:
+      test: curl --fail -s -X GET http://localhost:8080/api/ping || exit 1
+      interval: 5m
+      timeout: 2s
+      retries: 3
+
+  #############
+  # Databases #
+  #############
+
+  currency_redis:
+    image: redis
+    restart: "always"
+    networks:
+      - currency_network
+    command: [ "redis-server", "--appendonly", "yes" ]
+    volumes:
+      - redis_data:/data
       
   #################
   # Frontend Nodes #
@@ -91,6 +110,7 @@ services:
   ###################
   # Event Streaming #
   ###################
+
   zookeeper:
     image: 'bitnami/zookeeper:latest'
     ports:

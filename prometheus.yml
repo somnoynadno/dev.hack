@@ -26,4 +26,4 @@ scrape_configs:
     # scheme defaults to 'http'.
 
     static_configs:
-        - targets: ['prometheus:9090', 'nginx_metrics:9113', 'currency_api:6666', 'document_api:7777']
+        - targets: ['prometheus:9090', 'nginx_metrics:9113', 'enum_api:4444', 'currency_api:6666', 'document_api:7777']
