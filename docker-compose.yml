@@ -107,6 +107,21 @@ services:
     command: [ "redis-server", "--appendonly", "yes" ]
     volumes:
       - redis_data:/data
+
+  transaction_mongo:
+    image: mongo
+    container_name: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGO_INITDB_DATABASE: transactions
+      MONGO_INITDB_ROOT_USERNAME: mongo
+      MONGO_INITDB_ROOT_PASSWORD: mongo
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      nginx_proxy:
       
   #################
   # Frontend Nodes #
@@ -187,6 +202,7 @@ volumes:
   grafana_data:
   prometheus_data:
   redis_data:
+  mongo_data:
 
 
 networks:
