@@ -37,6 +37,6 @@ for message in consumer:
         producer.send(success_topic, key=trans_key, value=json.dumps(trans_dict).encode())
     except Exception:
         trans_dict["status"] = "TransactionFailed"
-        producer.send(fail_topic, key=trans_key, value=json.dumps(trans_dict).encose())
+        producer.send(fail_topic, key=trans_key, value=json.dumps(trans_dict).encode())
     print(trans_dict["status"])
     producer.flush()

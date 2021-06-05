@@ -19,6 +19,7 @@ func AwaitConfirmationForever() {
 
 	h := hub.GetHub()
 
+	log.Debug("Serving messages...")
 	for {
 		m, err := r.ReadMessage(context.Background())
 		if err != nil {

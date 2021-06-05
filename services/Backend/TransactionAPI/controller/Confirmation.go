@@ -30,7 +30,7 @@ var RegisterTransaction = func(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		u.HandleInternalError(w, err)
 	} else {
-		u.Respond(w, u.Message(true, uuid.New().String()))
+		u.Respond(w, u.Message(true, id))
 	}
 }
 

@@ -2,6 +2,7 @@ package main
 
 import (
 	"dev-hack/services/Backend/TransactionAPI/controller"
+	"dev-hack/services/Backend/TransactionAPI/core"
 	u "dev-hack/services/Backend/TransactionAPI/utils"
 	"github.com/gorilla/mux"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
@@ -16,6 +17,8 @@ func init() {
 }
 
 func main() {
+	go core.AwaitConfirmationForever()
+
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/{any}", u.HandleOptions).Methods(http.MethodOptions)
@@ -25,7 +28,6 @@ func main() {
 
 	router.HandleFunc("/api/register_transaction", controller.RegisterTransaction).Methods(http.MethodPost)
 	router.HandleFunc("/api/transaction/{id}/confirm/{code}", controller.ConfirmTransaction).Methods(http.MethodPost)
-
 
 	router.HandleFunc("/api/transaction", controller.CreateTransaction).Methods(http.MethodPost)
 	router.HandleFunc("/api/transaction/{id}", controller.GetTransactionByID).Methods(http.MethodGet)

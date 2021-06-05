@@ -9,8 +9,7 @@ func init() {
 	HubMap["Ожидание СМС-подтверждения"] = "SMSConfirmationRequired"
 	HubMap["Ожидание подтверждения сотрудником банка"] = "BankEmployeeConfirmationRequired"
 	HubMap["Транзакция подтверждена"] = "TransactionConfirmed"
-	HubMap["Ожидание перевода инициатора"] = "AwaitingForSenderTransaction"
-	HubMap["Ожидание перевода получателя"] = "AwaitingForReceiverTransaction"
+	HubMap["Ожидание перевода денежных средств"] = "AwaitingForMoneyTransfer"
 	HubMap["Ожидание создание чека"] = "AwaitingForReceiptGeneration"
 	// Success
 	HubMap["Успешная обработка"] = "TransactionSucceed"
