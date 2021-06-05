@@ -38,7 +38,26 @@ services:
   # Backend Nodes #
   #################
 
-  # Goes here
+  currency_api:
+    build: services/Backend/CurrencyAPI
+    container_name: currency_api
+    ports:
+      6666:6666
+    restart: always
+    networks:
+      - default
+      - nginx_proxy
+      - currency_network
+    environment:
+        - REDIS_HOST=currency_redis
+    depends_on:
+          - currency_redis
+
+  currency_redis:
+    image: redis
+    restart: "always"
+    networks:
+      - currency_network
 
   #################
   # Frontend Nodes #
@@ -123,3 +142,5 @@ networks:
   default:
   nginx_proxy:
     internal: true
+  currency_network:
+      internal: true
