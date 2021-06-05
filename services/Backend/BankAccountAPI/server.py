@@ -1,3 +1,6 @@
+from postgres_client import DatabaseClient
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from prometheus_client import make_wsgi_app
 from flask import Flask, jsonify, request
 
 from flask_cors import CORS
@@ -7,16 +10,11 @@ app = Flask(__name__)
 cors = CORS(app)
 
 
-from prometheus_client import make_wsgi_app
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
-
 # Add prometheus wsgi middleware to route /metrics requests
 app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
     '/metrics': make_wsgi_app()
 })
 
-admin = {"account_id":"ADMIN_ACCOUNT","bank_account_type_id":0,"balance":0,"currency_name":"EUR"}
-user = {"account_id":"USER_ACCOUNT","bank_account_type_id":0,"balance":100,"currency_name":"EUR"}
 
 @app.before_first_request
 def before_request():
@@ -49,7 +47,7 @@ def find_account():
     return jsonify(account)
 
 
-@app.route('/add_money', methods=["POST"])
+@app.route('/bank_accounts', methods=["GET"])
 @cross_origin()
 def bank_accounts():
     id = int(request.args.get('id'))
@@ -63,6 +61,16 @@ def bank_accounts():
         account[2] = float(account[2])
         res.append(account)
     return jsonify(res)
+
+
+@app.route('/add_money', methods=["POST"])
+@cross_origin()
+def add_money():
+    id = int(request.args.get('id'))
+    delta = int(request.args.get('delta'))
+    with DatabaseClient() as db:
+        db.update_balance(delta, id)
+    return jsonify(status='ok')
 
 
 if __name__ == "__main__":
