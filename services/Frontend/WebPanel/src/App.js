@@ -1,11 +1,20 @@
 import React from 'react';
+import {Redirect, Route, Switch, withRouter} from "react-router-dom";
+import {LoginPage} from "./view/pages/LoginPage";
+
 
 function App() {
     return (
-        <div className="App">
-            Hello
-        </div>
+        <Switch>
+            <Route exact path='/login' component={LoginPage}/>
+            <Route exact path='/logout' component={Logout}/>
+        </Switch>
     );
 }
 
-export default App;
+function Logout() {
+    localStorage.removeItem('token');
+    return <Redirect to={'/login'}/>
+}
+
+export default withRouter(App);
