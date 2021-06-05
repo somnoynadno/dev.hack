@@ -1,9 +1,14 @@
 from kafka import KafkaProducer, KafkaConsumer
 import json
 import unittest
+import string, random
+
+def generate_random_str():
+    return ''.join(random.choices(string.ascii_letters + string.digits, k=10))
+
 
 producer = KafkaProducer(bootstrap_servers=['somnoynadno.ru:9092'], retries=5)
-trans_id = b"TEST_TEST_TEST"
+trans_id = b"TEST_TEST_TEST" + generate_random_str().encode()
 
 dic = {
   "json_ver": 2,
@@ -19,6 +24,7 @@ dic = {
   "type": "SomeEnumValue",
   "status": "SomeEnumValue"
 }
+
 
 def send():
     val = json.dumps(dic).encode()
