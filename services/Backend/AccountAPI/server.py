@@ -19,6 +19,12 @@ app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
 })
 
 
+@app.before_first_request
+def before_request():
+    with DatabaseClient() as db:
+        db.create_table()
+
+
 @app.route('/login', methods=["POST"])
 @cross_origin()
 def login():
@@ -30,9 +36,10 @@ def login():
         user = db.get_user(login)
     if not user:
         return jsonify(error='no such user'), 404
-    if sha256(password) != user['password_hash']:
+    id, account_type_id, login, email, password_hash = user
+    if sha256(password.encode('utf-8')).hexdigest() != password_hash:
         return jsonify(error='unauthorized'), 401
-    return jsonify(username=user['login'], email=user['email'], account_type_id=user['account_type_id']), 200
+    return jsonify(username=login, email=email, account_type_id=account_type_id), 200
 
 
 @app.route('/register', methods=["POST"])
@@ -44,7 +51,8 @@ def register():
     password = json['password']
     email = json['email']
     with DatabaseClient() as db:
-        db.create_user(account_type_id, login, email, sha256(password))
+        db.create_user(account_type_id, login, email,
+                       sha256(password.encode('utf-8')).hexdigest())
     return jsonify(status='ok'), 201
 
 
