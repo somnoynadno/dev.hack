@@ -1,21 +1,32 @@
-from docx import Document
-from docx.shared import Inches
-import os.path
+import json
+from flask import Flask, jsonify, request, send_from_directory
+import docx_controller
 
-default_upload_folder = '/tmp'
-UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER", default_upload_folder)
+app = Flask(__name__)
 
-def create_operation_status_docx(account_from, account_to, currency_code, currency_value, status):
-    document = Document()
-    document.add_heading('ПСБ-Банк', 0)
-    document.add_paragraph(f'Счет списания: {account_from}')
-    document.add_paragraph(f'Счет получения: {account_to}')
-    document.add_paragraph(f'Сумма: {currency_value} {currency_code}')
-    document.add_paragraph(f'Статус операции: {status}')
+@app.route('/create_operation_status_doc', methods=["POST"])
+def create_doc():
+    try:
+        posted_json = request.get_json()
+    except werkzeug.exceptions.BadRequest:
+        raise ValueError("WHERE IS MY JSON?!")
+    filename = docx_controller.generate_random_filename()
 
-    filename = os.path.join(UPLOAD_FOLDER, "test.docx")
-    document.save(filename)
+    account_from = posted_json['account_from']
+    account_to = posted_json['account_to']
+    currency_code_from = posted_json['currency_code_from']
+    #currency_to = posted_json['currency_to']
 
-create_operation_status_docx('2112', '3232', 'EUR', 12, "Отменена")
-    
+    currency_value = posted_json["currency_value"]
+    status = posted_json["status"]
 
+    docx_controller.create_operation_status_docx(account_from, account_to, currency_code_from, currency_value, status, filename)
+    return filename
+
+@app.route('/get_operation_status_doc')
+def get_doc():
+    filename = request.args.get('filename')
+    return send_from_directory(docx_controller.UPLOAD_FOLDER, filename)
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port="7777", debug=True)
