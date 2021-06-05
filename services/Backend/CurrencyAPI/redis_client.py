@@ -40,9 +40,13 @@ def convert_currency_to_currency(cur_code_from, cur_code_to, value):
 
 def get_all_currency_prices():
     ans = {}
-    for key in r.keys():
-        ans[key] = _get_currency_value(key)
+    for key in r.scan_iter():
+        ans[key.decode()] = _get_currency_value(key.decode())
     return ans
 
 def get_keys():
-    return r.keys()
+    ans = []
+    for key in r.scan_iter():
+        ans.append(key.decode())
+    return ans
+
