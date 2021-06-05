@@ -1,6 +1,6 @@
 package models
 
-var HubMap map[string]string
+var HubMap = make(map[string]string)
 
 func init() {
 	// Normal flow

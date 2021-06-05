@@ -1,8 +1,7 @@
 package controller
 
 import (
-	"context"
-	"dev-hack/services/Backend/TransactionAPI/db"
+	"dev-hack/services/Backend/TransactionAPI/db/dao"
 	"dev-hack/services/Backend/TransactionAPI/models"
 	u "dev-hack/services/Backend/TransactionAPI/utils"
 	"encoding/json"
@@ -19,9 +18,7 @@ var CreateTransaction = func(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	transactionsDB := db.GetDB().Collection("transactions")
-	result, err := transactionsDB.InsertOne(context.TODO(), transaction)
-
+	result, err := dao.CreateTransaction(transaction)
 	if err != nil {
 		u.HandleBadRequest(w, err)
 	} else {

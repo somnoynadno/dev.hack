@@ -12,7 +12,7 @@ var db *mongo.Database
 
 func init() {
 	DBName := "transactions"
-	URL := "mongodb://95.182.120.116:27017"
+	URL := "mongodb://mongo:mongo@95.182.120.116:27017"
 
 	ctx := context.Background()
 	clientOpts := options.Client().ApplyURI(URL)
