@@ -35,10 +35,10 @@ export const IndexPage = () => {
                         <Menu.Item key="bank_accounts" icon={<DollarCircleOutlined/>}>
                             Мои счета
                         </Menu.Item>
-                        <Menu.Item key="transactions" icon={<PlusCircleOutlined/>}>
+                        <Menu.Item key="new_transaction" icon={<PlusCircleOutlined/>}>
                             Новая операция
                         </Menu.Item>
-                        <Menu.Item key="new_transaction" icon={<AppstoreOutlined/>}>
+                        <Menu.Item key="transactions" icon={<AppstoreOutlined/>}>
                             История транзакций
                         </Menu.Item>
                         <Menu.Item key="my_profile" icon={<SettingOutlined/>}>
