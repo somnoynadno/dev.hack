@@ -61,19 +61,20 @@ services:
     command: [ "redis-server", "--appendonly", "yes"]
     volumes:
       - redis_data:/data
+      
   #################
   # Frontend Nodes #
   #################
 
-#  web_panel:
-#    build: services/Frontend/WebPanel
-#    container_name: web_panel
-#    ports:
-#      - 8030:3000
-#    restart: always
-#    networks:
-#      - default
-#      - nginx_proxy
+  web_panel:
+    build: services/Frontend/WebPanel
+    container_name: web_panel
+    ports:
+      - 8030:3000
+    restart: always
+    networks:
+      - default
+      - nginx_proxy
 
   ###################
   # Event Streaming #
@@ -139,6 +140,7 @@ volumes:
   grafana_data:
   prometheus_data:
   redis_data:
+
 
 networks:
   default:
