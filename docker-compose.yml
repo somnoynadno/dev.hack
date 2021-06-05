@@ -72,6 +72,7 @@ services:
   enum_api:
     build: services/Backend/EnumAPI
     container_name: enum_api
+    hostname: enum_api
     ports:
       - 4444:4444
     restart: always
@@ -86,12 +87,13 @@ services:
 
   transaction_api:
     build: services/Backend/TransactionAPI
-    container_name: backend
+    container_name: transaction_api
     ports:
       - 5555:5555
     restart: always
     networks:
       - default
+      - nginx_proxy
 
   #############
   # Databases #
