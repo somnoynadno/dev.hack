@@ -53,7 +53,7 @@ def bank_accounts():
 
 @app.route('/add_money', methods=["POST"])
 @cross_origin()
-def bank_accounts():
+def add_money():
     id = int(request.args.get('id'))
     delta = int(request.args.get('delta'))
     with DatabaseClient() as db:

@@ -6,7 +6,9 @@ postgres_host = os.environ.get('POSTGRES_HOST', 'localhost')
 
 class DatabaseClient:
     def __init__(self):
-        self.create_table()
+#        self.__enter__()
+#        self.create_table()
+#        self.__exit__(None,None,None)
 
     def __enter__(self):
         self.conn = psycopg2.connect(dbname='bank_account_db', user='postgres',
@@ -20,8 +22,8 @@ class DatabaseClient:
 
     def create_table(self):
         self.cursor.execute("""create table if not exists bank_accounts(
-id int generated always as identity
-account_id int not null,
+id int generated always as identity,
+account_id string not null,
 balance decimal not null,
 type_id int not null,
 currency_name varchar(64) not null);""")
@@ -42,6 +44,7 @@ currency_name varchar(64) not null);""")
         return self.cursor.fetchall()
 
     def create_account(self, account_id, type_id, currency_name):
+        self.create_table()
         self.cursor.execute(
             'INSERT INTO bank_accounts (account_id, balance, type_id, currency_name) VALUES (%s, 100, %s, %s)', (account_id, type_id, currency_name))
         self.conn.commit()
