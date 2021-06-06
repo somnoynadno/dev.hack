@@ -1,31 +1,26 @@
 import React, {useState} from 'react';
 import {Alert, Button, Col, Form, Input, Layout, Row, Typography} from 'antd';
 import {accountAPI} from "../../http/AccountAPI";
-import {http} from "../../http/http-common";
 import history from "../../history";
 
 const {Content} = Layout;
 const {Title} = Typography;
 
-export const LoginPage = () => {
+export const RegisterPage = () => {
     const [errorText, setErrorText] = useState("");
 
     const onFinish = (values) => {
         setErrorText('');
-        accountAPI.LoginUser(values.username, "", values.password).then((r) => {
-            localStorage.setItem("id", r.id);
-            history.push('/');
+        accountAPI.RegisterUser(values.username, "", values.password).then((r) => {
+            history.push('/login');
         }).catch(err => {
-            if (err.response.status === 401) {
-                setErrorText("Неверные логин или пароль");
-            } else {
-                setErrorText("Произошли непредвиденная ошибка, повторите попытку позже");
+                setErrorText("Произошла непредвиденная ошибка, повторите попытку позже");
             }
-        })
+        )
     };
 
     const onFinishFailed = (errorInfo) => {
-        console.log('Login failed:', errorInfo);
+        console.log('Register failed:', errorInfo);
     };
 
     return (
@@ -39,7 +34,7 @@ export const LoginPage = () => {
                             onFinish={onFinish}
                             onFinishFailed={onFinishFailed}
                         >
-                            <Title style={{textAlign: "center"}} level={2}>Логин</Title>
+                            <Title style={{textAlign: "center"}} level={2}>Регистрация</Title>
                             <Form.Item
                                 label="Пользователь"
                                 name="username"
@@ -57,12 +52,9 @@ export const LoginPage = () => {
                             {errorText ?
                                 <Alert style={{marginBottom: 18}} message={errorText} type="error"/> : ''
                             }
-                            <Button type="link" onClick={() => history.push('/register')}>
-                                Регистрация здесь
-                            </Button>
                             <Form.Item {...tailLayout}>
                                 <Button type="primary" htmlType="submit">
-                                    Войти
+                                    Продолжить
                                 </Button>
                             </Form.Item>
                         </Form>

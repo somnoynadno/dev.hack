@@ -1,6 +1,7 @@
 export const APIs = {
-    "AccountAPI": "http://account.dev.somnoynadno.ru/api",
-    "BankAccountAPI": "http://bank-account.dev.somnoynadno.ru/api",
+    "AccountAPI": "http://95.182.120.116:1111",
+    "BankAccountAPI": "http://95.182.120.116:2222",
     "CurrencyAPI": "http://currency.dev.somnoynadno.ru",
     "EnumAPI": "http://enum.dev.somnoynadno.ru/api",
+    "TransactionAPI": "http://transaction.dev.somnoynadno.ru/api",
 }

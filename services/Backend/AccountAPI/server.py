@@ -39,7 +39,7 @@ def login():
     id, account_type_id, login, email, password_hash = user
     if sha256(password.encode('utf-8')).hexdigest() != password_hash:
         return jsonify(error='unauthorized'), 401
-    return jsonify(username=login, email=email, account_type_id=account_type_id), 200
+    return jsonify(username=login, email=email, account_type_id=account_type_id, id=id), 200
 
 
 @app.route('/register', methods=["POST"])
