@@ -5,6 +5,8 @@ import docx_controller
 from flask_cors import CORS
 from flask_cors import cross_origin
 
+from kafka_daemon import runner
+
 app = Flask(__name__)
 cors = CORS(app)
 
