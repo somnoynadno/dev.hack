@@ -116,6 +116,9 @@ services:
   transaction_api:
     build: services/Backend/TransactionAPI
     container_name: transaction_api
+    depends_on:
+      - kafka
+      - transaction_mongo
     ports:
       - 5555:5555
     restart: always
@@ -215,6 +218,7 @@ services:
       - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://95.182.120.116:9092
       - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
       - ALLOW_PLAINTEXT_LISTENER=yes
+      - KAFKA_AUTO_CREATE_TOPICS_ENABLE=true  
     depends_on:
       - zookeeper
 
