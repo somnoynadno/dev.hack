@@ -5,7 +5,7 @@ import {transactionAPI} from "../../../http/TransactionAPI";
 
 export const ConfirmTransactionStep = (props) => {
     let [errorText, setErrorText] = useState("");
-    let [transactionID, setTransactionID] = useState("");
+    let [transactionID, setTransactionID] = useState(null);
     let [code, setCode] = useState("");
 
     let [wrongCode, setWrongCode] = useState(false);
@@ -37,7 +37,7 @@ export const ConfirmTransactionStep = (props) => {
             {JSON.stringify(props.transaction, null, "\t")}
             </pre>
             <br/>
-            <Button disable={transactionID} onClick={() => createConfirmationRequest()}>Подтвердить</Button>
+            <Button disable={transactionID === null ? true : false} onClick={() => createConfirmationRequest()}>Подтвердить</Button>
             {
                 transactionID ?
                     <Form style={{marginTop: 10}} onValuesChange={onFormLayoutChange}>

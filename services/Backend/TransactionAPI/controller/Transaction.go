@@ -11,6 +11,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
+	"strconv"
 )
 
 var CreateTransaction = func(w http.ResponseWriter, r *http.Request) {
@@ -53,7 +54,7 @@ var GetTransactionByID = func(w http.ResponseWriter, r *http.Request) {
 var GetTransactionsByBankAccountID = func(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 
-	id:= params["id"]
+	id, _ := strconv.Atoi(params["id"])
 	result, err := dao.GetTransactionsByBankAccountID(id)
 	if err != nil {
 		u.HandleInternalError(w, err)

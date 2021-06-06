@@ -17,7 +17,7 @@ function App() {
 }
 
 function Logout() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('id');
     return <Redirect to={'/login'}/>
 }
 
