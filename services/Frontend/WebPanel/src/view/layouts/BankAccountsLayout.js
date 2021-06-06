@@ -32,7 +32,8 @@ export const BankAccountsLayout = () => {
                 dataSource={accounts}
                 renderItem={item => (
                     <List.Item className="clickable"
-                               onClick={() => history.push(`/bank_account/${item.id}`)}>
+                               // onClick={() => history.push(`/bank_account/${item.id}`)}
+                    >
                         <List.Item.Meta
                             avatar={<WalletOutlined style={{fontSize: "3em"}}/>}
                             title={<h3>{`${accountTypes[item.type_id]} №${item.id}`}</h3>}

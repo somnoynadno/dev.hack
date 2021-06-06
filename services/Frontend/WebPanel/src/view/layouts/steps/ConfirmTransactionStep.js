@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Form, InputNumber} from "antd";
+import {Button, Form, Input, InputNumber} from "antd";
 import {transactionAPI} from "../../../http/TransactionAPI";
 
 
@@ -7,6 +7,8 @@ export const ConfirmTransactionStep = (props) => {
     let [errorText, setErrorText] = useState("");
     let [transactionID, setTransactionID] = useState("");
     let [code, setCode] = useState("");
+
+    let [wrongCode, setWrongCode] = useState(false);
 
     const createConfirmationRequest = () => {
         transactionAPI.RegisterTransaction(props.transaction).then((r) => {
@@ -17,13 +19,15 @@ export const ConfirmTransactionStep = (props) => {
 
     const sendVerificationCode = () => {
         transactionAPI.ConfirmTransaction(transactionID, code, props.transaction).then((r) => {
-            console.log(r);
-            setTransactionID(r.message);
-        }).catch((err) => setErrorText("Повторите попытку позже."));
+            props.transactionConfirmedCallback(Object.assign(props.transaction, {id: transactionID}));
+        }).catch((err) => {
+            setWrongCode(true);
+        });
     }
 
     const onFormLayoutChange = (values) => {
-        setCode(values.code.toString());
+        console.log(values)
+        setCode(values.code);
     }
 
     return (
@@ -39,9 +43,9 @@ export const ConfirmTransactionStep = (props) => {
                     <Form style={{marginTop: 10}} onValuesChange={onFormLayoutChange}>
                         <h4>Введите код подтверждения</h4>
                         <h6>Он был отправлен на ваш телефон</h6>
-                        <Form.Item
+                        <Form.Item validateStatus={wrongCode ? 'error' : 'success'} style={{maxWidth: 180}}
                             name="code" label="Код">
-                            <InputNumber/>
+                            <Input/>
                         </Form.Item>
                         <Button onClick={() => sendVerificationCode()}>Продолжить</Button>
                     </Form>

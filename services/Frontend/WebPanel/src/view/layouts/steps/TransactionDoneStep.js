@@ -1,15 +1,18 @@
 import React from 'react';
 import {Button, Result} from "antd";
 import history from "../../../history";
+import {APIs} from "../../../config";
 
 
 export const TransactionDoneStep = (props) => {
+    console.log(props.transaction);
+
     return (
         <div style={{margin: 20}}>
             <Result
                 status="success"
-                title="Успешно!"
-                subTitle="Номер транзакции: 2017182818828182881. Ваш чек доступен ниже."
+                title="Успешно! Ваш чек доступен ниже."
+                subTitle={`Номер транзакции: ${props.transaction.id}.`}
                 extra={[
                     <Button onClick={() => {
                         history.push('/new_transaction');
@@ -17,7 +20,9 @@ export const TransactionDoneStep = (props) => {
                     }}>
                         Вернуться в начало
                     </Button>,
-                    <Button onClick={() => console.log("TODO")} type="primary">Скачать чек</Button>,
+                    <Button
+                        onClick={() => window.location.replace(APIs["DocumentAPI"] + "/get_operation_status_doc?filename=" + props.transaction.docx_filepath)}
+                        type="primary">Скачать чек</Button>,
                 ]}
             />,
         </div>

@@ -8,7 +8,7 @@ import {currencyAPI} from "../../../http/CurrencyAPI";
 export const MakeTransactionStep = (props) => {
     const defaultTransaction = {
         "json_ver": 2,
-        "docx_filepath": "",
+        "docx_filepath": Math.random().toString(36).substring(7) + ".docx",
         "amount_of_hold": 0,
         "status": "Created",
         "type": props.selectedTransactionType.RusName,
