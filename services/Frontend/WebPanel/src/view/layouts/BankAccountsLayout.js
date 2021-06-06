@@ -3,27 +3,21 @@ import {Button, List} from 'antd';
 import {WalletOutlined} from '@ant-design/icons';
 import history from "../../history";
 import {bankAccountAPI} from "../../http/BankAccountAPI";
-
-const data = [
-    {
-        title: '123412351234',
-    },
-    {
-        title: '123412351234',
-    },
-    {
-        title: '123412351234',
-    },
-    {
-        title: '123412351234',
-    },
-];
+import {enumAPI} from "../../http/EnumAPI";
 
 export const BankAccountsLayout = () => {
     let [accounts, setAccounts] = useState([]);
+    let [accountTypes, setAccountTypes] = useState({});
     let [errorText, setErrorText] = useState("");
 
     useEffect(() => {
+        enumAPI.GetBankAccountTypes().then(r => {
+            let res = {};
+            for (let e of r) {
+                res[e.ID] = e.RusName;
+            }
+            setAccountTypes(res);
+        })
         bankAccountAPI.GetUserBankAccounts().then(r => {
             setAccounts(r)
         }).catch(err => setErrorText("Произошла ошибка при получении счетов."))
@@ -34,14 +28,14 @@ export const BankAccountsLayout = () => {
             <List
                 style={{marginLeft: 15, marginTop: 10, padding: 5}}
                 itemLayout="horizontal"
-                dataSource={data}
+                dataSource={accounts}
                 renderItem={item => (
                     <List.Item className="clickable"
-                               onClick={() => history.push(`/bank_account/${item.title}`)}>
+                               onClick={() => history.push(`/bank_account/${item.id}`)}>
                         <List.Item.Meta
                             avatar={<WalletOutlined style={{fontSize: "3em"}}/>}
-                            title={<h3>{"Депозитный счёт №" + item.title}</h3>}
-                            description={<h3>534 rub</h3>}
+                            title={<h3>{`${accountTypes[item.type_id]} №${item.id}`}</h3>}
+                            description={<h3>{item.balance} {item.currency_name}</h3>}
                         />
                     </List.Item>
                 )}

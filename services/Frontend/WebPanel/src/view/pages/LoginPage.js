@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Alert, Button, Col, Form, Input, Layout, Row, Typography} from 'antd';
 import {accountAPI} from "../../http/AccountAPI";
-import {http} from "../../http/http-common";
 import history from "../../history";
 
 const {Content} = Layout;
@@ -14,6 +13,7 @@ export const LoginPage = () => {
         setErrorText('');
         accountAPI.LoginUser(values.username, "", values.password).then((r) => {
             localStorage.setItem("id", r.id);
+            localStorage.setItem("username", r.username);
             history.push('/');
         }).catch(err => {
             if (err.response.status === 401) {

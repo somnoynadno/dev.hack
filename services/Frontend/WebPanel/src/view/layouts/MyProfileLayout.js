@@ -9,8 +9,8 @@ export const MyProfileLayout = () => {
     return (
         <div style={{margin: 20}}>
             <Avatar style={{float: "left", marginRight: 20}} size={128} icon={<UserOutlined/>}/>
-            <h1>Username</h1>
-            <h3>User role</h3>
+            <h1>{localStorage.getItem("username")}</h1>
+            <h3>Пользователь</h3>
             <br/>
             <Button type="link" onClick={() => history.push('/logout')}>Выход</Button>
         </div>
