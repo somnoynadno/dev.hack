@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Button, List} from 'antd';
 import {WalletOutlined} from '@ant-design/icons';
 import history from "../../history";
+import {bankAccountAPI} from "../../http/BankAccountAPI";
 
 const data = [
     {
@@ -19,6 +20,15 @@ const data = [
 ];
 
 export const BankAccountsLayout = () => {
+    let [accounts, setAccounts] = useState([]);
+    let [errorText, setErrorText] = useState("");
+
+    useEffect(() => {
+        bankAccountAPI.GetUserBankAccounts().then(r => {
+            setAccounts(r)
+        }).catch(err => setErrorText("Произошла ошибка при получении счетов."))
+    }, [])
+
     return (
         <>
             <List

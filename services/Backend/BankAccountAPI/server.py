@@ -43,8 +43,13 @@ def find_account():
     if not account:
         return jsonify(error='no such account'), 404
     account = list(account)
-    account[2] = float(account[2])
-    return jsonify(account)
+    a = {}
+    a["id"] = account[0]
+    a["account_id"] = account[1]
+    a["balance"] = float(account[2])
+    a["type_id"] = account[3]
+    a["currency_name"] = account[4]
+    return jsonify(a)
 
 
 @app.route('/bank_accounts', methods=["GET"])
@@ -57,9 +62,13 @@ def bank_accounts():
         return jsonify(error='no bank accounts for this account'), 404
     res = []
     for account in accounts:
-        account = list(account)
-        account[2] = float(account[2])
-        res.append(account)
+        a = {}
+        a["id"] = account[0]
+        a["account_id"] = account[1]
+        a["balance"] = float(account[2])
+        a["type_id"] = account[3]
+        a["currency_name"] = account[4]
+        res.append(a)
     return jsonify(res)
 
 

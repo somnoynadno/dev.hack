@@ -8,6 +8,7 @@ import {TransactionHistoryLayout} from "../layouts/TransactionHistoryLayout";
 import history from "../../history";
 import {MyProfileLayout} from "../layouts/MyProfileLayout";
 import {NewTransactionLayout} from "../layouts/NewTransactionLayout";
+import {NewBankAccountLayout} from "../layouts/NewBankAccountLayout";
 
 const {Content} = Layout;
 
@@ -46,6 +47,7 @@ export const IndexPage = () => {
                         </Menu.Item>
                     </Menu>
                     <Route exact path="/bank_accounts" component={BankAccountsLayout}/>
+                    <Route exact path="/new_bank_account" component={NewBankAccountLayout}/>
                     <Route exact path="/transactions" component={TransactionHistoryLayout}/>
                     <Route exact path="/new_transaction" component={NewTransactionLayout}/>
                     <Route exact path="/my_profile" component={MyProfileLayout}/>

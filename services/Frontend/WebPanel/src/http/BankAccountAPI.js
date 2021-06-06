@@ -8,6 +8,7 @@ export class BankAccountAPI {
             axios.post(`${APIs["BankAccountAPI"]}/new_account`, {
                 bank_account_type_id: bankAccountTypeID,
                 currency_name: currencyName,
+                account_id: localStorage.getItem("id"),
             })
                 .then(response => resolve(response.data))
                 .catch(error => reject(error))
@@ -24,7 +25,7 @@ export class BankAccountAPI {
 
     GetUserBankAccounts() {
         return new Promise((resolve, reject) => {
-            axios.get(`${APIs["BankAccountAPI"]}/bank_accounts`)
+            axios.get(`${APIs["BankAccountAPI"]}/bank_accounts?id=${localStorage.getItem("id")}`)
                 .then(response => resolve(response.data))
                 .catch(error => reject(error))
         });
