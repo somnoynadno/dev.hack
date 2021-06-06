@@ -2,79 +2,50 @@ import React, {useEffect, useState} from 'react';
 import {Input, Space, Table, Tag, Row, Col} from 'antd';
 import {transactionAPI} from "../../http/TransactionAPI";
 import {bankAccountAPI} from "../../http/BankAccountAPI";
+import {APIs} from "../../config";
+import moment from "moment";
 
 const {Search} = Input;
 
 const columns = [
     {
-        title: 'Name',
-        dataIndex: 'name',
-        key: 'name',
-        render: text => <a>{text}</a>,
+        title: 'Дата',
+        dataIndex: 'timestamp',
+        key: 'timestamp',
+        render: text => <span>{moment(text).format("LLL")}</span>
     },
     {
-        title: 'Age',
-        dataIndex: 'age',
-        key: 'age',
+        title: 'Тип',
+        dataIndex: 'type',
+        key: 'type',
     },
     {
-        title: 'Address',
-        dataIndex: 'address',
-        key: 'address',
+        title: 'Откуда',
+        dataIndex: 'account_from',
+        key: 'account_from',
+        render: text => <span>№{text}</span>
     },
     {
-        title: 'Tags',
-        key: 'tags',
-        dataIndex: 'tags',
-        render: tags => (
-            <>
-                {tags.map(tag => {
-                    let color = tag.length > 5 ? 'geekblue' : 'green';
-                    if (tag === 'loser') {
-                        color = 'volcano';
-                    }
-                    return (
-                        <Tag color={color} key={tag}>
-                            {tag.toUpperCase()}
-                        </Tag>
-                    );
-                })}
-            </>
-        ),
+        title: 'Куда',
+        dataIndex: 'account_to',
+        key: 'account_to',
+        render: text => <span>№{text}</span>
     },
     {
-        title: 'Action',
-        key: 'action',
-        render: (text, record) => (
-            <Space size="middle">
-                <a>Invite {record.name}</a>
-                <a>Delete</a>
-            </Space>
-        ),
-    },
-];
-
-const data = [
-    {
-        key: '1',
-        name: 'John Brown',
-        age: 32,
-        address: 'New York No. 1 Lake Park',
-        tags: ['nice', 'developer'],
+        title: 'Перевод',
+        dataIndex: 'transfer',
+        key: 'transfer'
     },
     {
-        key: '2',
-        name: 'Jim Green',
-        age: 42,
-        address: 'London No. 1 Lake Park',
-        tags: ['loser'],
+        title: "Комиссия",
+        dataIndex: 'comission',
+        key: 'comission'
     },
     {
-        key: '3',
-        name: 'Joe Black',
-        age: 32,
-        address: 'Sidney No. 1 Lake Park',
-        tags: ['cool', 'teacher'],
+        title: 'Чек',
+        key: 'docx_filepath',
+        dataIndex: 'docx_filepath',
+        render: text => <a href={APIs["DocumentAPI"] + "/get_operation_status_doc?filename=" + text}>{text}</a>,
     },
 ];
 
@@ -89,12 +60,15 @@ export const TransactionHistoryLayout = () => {
             for (let elem of res) {
                 let r = await transactionAPI.GetTransactionsByBankAccountID(elem.id);
                 if (r) {
-                    for (let e of r) arr.push(e);
+                    for (let e of r) {
+                        e.transfer = `${e.currency_amount_from} ${e.currency_code_from} -> ${e.currency_amount_to} ${e.currency_code_to}`
+                        arr.push(e);
+                    }
                 }
             }
 
             console.log(arr);
-            setTransactions(arr);
+            setTransactions(arr.reverse());
         });
 
     }, [])
@@ -106,7 +80,7 @@ export const TransactionHistoryLayout = () => {
                     <Search allowClear onSearch={onSearch}/>
                 </Col>
             </Row>
-            <Table columns={columns} dataSource={data}/>
+            <Table columns={columns} dataSource={transactions}/>
         </div>
     );
 }
