@@ -85,6 +85,8 @@ def add_money():
 
 
 if __name__ == "__main__":
+    import threading
+
     class KafkaCollector(object):
         def __init__(self):
             thread = threading.Thread(target=self.run, args=())

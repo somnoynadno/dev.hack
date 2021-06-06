@@ -25,4 +25,16 @@ def get_doc():
     return send_from_directory(docx_controller.UPLOAD_FOLDER, filename)
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port="7777", debug=True)
+    import threading
+
+    class KafkaCollector(object):
+        def __init__(self):
+            thread = threading.Thread(target=self.run, args=())
+            thread.daemon = True                            # Daemonize thread
+            thread.start()                                  # Start the execution
+
+        def run(self):
+            runner()
+
+    daemon = KafkaCollector()
+    app.run(host="0.0.0.0", port="7777", debug=True)
