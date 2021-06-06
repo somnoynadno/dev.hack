@@ -45,8 +45,8 @@ def wait_for_success():
             return True
 
 
-class TestDocumentAPI(unittest.TestCase):
-    def test_one_trans(self):
+class _TestDocumentAPI(unittest.TestCase):
+    def _test_one_trans(self):
         send()
         res = wait_for_success()
         self.assertTrue(res)

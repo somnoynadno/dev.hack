@@ -1,8 +1,5 @@
 name: 'Document Microservice Kafka Daemon Test'
-on:
-  push:
-    branches:
-      - main
+on: ["push"]
 
 jobs:
   build:
@@ -26,6 +23,5 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
       - name: Test with pytest
         run: |
-          cd services/Backend/DocumentAPI/
-          python kafka_daemon.py &
+          python services/Backend/DocumentAPI/kafka_daemon.py &
           pytest
