@@ -1,5 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Input, Space, Table, Tag, Row, Col} from 'antd';
+import {transactionAPI} from "../../http/TransactionAPI";
+import {bankAccountAPI} from "../../http/BankAccountAPI";
 
 const {Search} = Input;
 
@@ -78,6 +80,24 @@ const data = [
 
 export const TransactionHistoryLayout = () => {
     const onSearch = value => console.log(value);
+
+    const [transactions, setTransactions] = useState([]);
+
+    useEffect(() => {
+        bankAccountAPI.GetUserBankAccounts().then(async res => {
+            let arr = [];
+            for (let elem of res) {
+                let r = await transactionAPI.GetTransactionsByBankAccountID(elem.id);
+                if (r) {
+                    for (let e of r) arr.push(e);
+                }
+            }
+
+            console.log(arr);
+            setTransactions(arr);
+        });
+
+    }, [])
 
     return (
         <div>

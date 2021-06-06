@@ -20,7 +20,7 @@ func GetTransactionByID(transactionID string) *mongo.SingleResult {
 	return transactionsDB.FindOne(context.TODO(), bson.M{"_id": objID})
 }
 
-func GetTransactionsByBankAccountID(bankAccountID string) (*mongo.Cursor, error) {
+func GetTransactionsByBankAccountID(bankAccountID int) (*mongo.Cursor, error) {
 	transactionsDB := db.GetDB().Collection("transactions")
 	return transactionsDB.Find(context.TODO(), bson.M{"account_id_from": bankAccountID})
 }

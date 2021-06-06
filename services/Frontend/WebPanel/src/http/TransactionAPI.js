@@ -17,6 +17,22 @@ export class TransactionAPI {
                 .catch(error => reject(error))
         });
     }
+
+    SaveTransaction(transaction={}) {
+        return new Promise((resolve, reject) => {
+            axios.post(`${APIs["TransactionAPI"]}/transaction`, transaction)
+                .then(response => resolve(response.data))
+                .catch(error => reject(error))
+        });
+    }
+
+    GetTransactionsByBankAccountID(id=0) {
+        return new Promise((resolve, reject) => {
+            axios.get(`${APIs["TransactionAPI"]}/transactions_by_bank_account/${id}`)
+                .then(response => resolve(response.data))
+                .catch(error => reject(error))
+        });
+    }
 }
 
 export const transactionAPI = new TransactionAPI();

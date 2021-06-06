@@ -1,11 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Button, Result} from "antd";
 import history from "../../../history";
 import {APIs} from "../../../config";
+import {transactionAPI} from "../../../http/TransactionAPI";
 
 
 export const TransactionDoneStep = (props) => {
     console.log(props.transaction);
+
+    useEffect(() => {
+        transactionAPI.SaveTransaction(props.transaction).then((r) => {
+            console.log(r);
+        }).catch((err) => console.log(err));
+    }, [])
 
     return (
         <div style={{margin: 20}}>
