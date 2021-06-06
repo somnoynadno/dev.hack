@@ -17,11 +17,12 @@ export const BankAccountsLayout = () => {
                 res[e.ID] = e.RusName;
             }
             setAccountTypes(res);
-        })
+        });
+
         bankAccountAPI.GetUserBankAccounts().then(r => {
             setAccounts(r)
         }).catch(err => setErrorText("Произошла ошибка при получении счетов."))
-    }, [])
+    }, []);
 
     return (
         <>
