@@ -13,7 +13,7 @@ func AwaitConfirmationForever() {
 		Brokers:   []string{"95.182.120.116:9092"},
 		Topic:     models.HubMap["Транзакция подтверждена"],
 		Partition: 0,
-		MinBytes:  10e3, // 10KB
+		MinBytes:  0,    // 0KB
 		MaxBytes:  10e6, // 10MB
 	})
 
