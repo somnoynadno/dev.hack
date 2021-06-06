@@ -44,7 +44,7 @@ func AwaitConfirmationForever() {
 		}
 
 		meta := string(m.Value)
-		err = h.UpdateTransaction(string(m.Key), models.HubMap["Ожидание перевода инициатора"], &meta)
+		err = h.UpdateTransaction(string(m.Key), models.HubMap["Ожидание перевода денежных средств"], &meta)
 		if err != nil {
 			log.Error(err)
 			e := err.Error()

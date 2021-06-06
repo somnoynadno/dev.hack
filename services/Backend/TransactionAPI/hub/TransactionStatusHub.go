@@ -36,6 +36,8 @@ func (tsh *TransactionStatusHub) createAllStatuses() {
 }
 
 func (tsh *TransactionStatusHub) WriteNewStatus(transaction string, status string, meta *string) error {
+	log.Debug(transaction + " status changed to " + status)
+	log.Debug(*meta)
 	err := tsh.Writer.WriteMessages(context.Background(),
 		// NOTE: Each Message has Topic defined, otherwise an error is returned.
 		kafka.Message{
