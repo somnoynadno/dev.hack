@@ -18,8 +18,12 @@ export const IndexPage = () => {
 
     const handleMenuClick = (e) => {
         setCurrent(e.key);
-        history.push("/" + e.key)
+        history.push("/" + e.key);
     };
+
+    if (!localStorage.getItem("id")) {
+        history.push('/login');
+    }
 
     return (
         <Layout>
