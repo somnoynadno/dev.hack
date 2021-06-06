@@ -46,14 +46,14 @@ currency_name varchar(64) not null);""")
             'INSERT INTO bank_accounts (account_id, balance, type_id, currency_name) VALUES (%s, 100, %s, %s)', (account_id, type_id, currency_name))
         self.conn.commit()
 
-    def set_balance(self, balance, account_id):
+    def set_balance(self, balance, id):
         self.cursor.execute(
-            'update bank_accounts set balance=%s where account_id=%s', ((balance, account_id)))
+            'update bank_accounts set balance=%s where id=%s', ((balance, id)))
         self.conn.commit()
 
-    def update_balance(self, delta, account_id):
-        old_balance = self.get_account(account_id)[3]
+    def update_balance(self, delta, id):
+        old_balance = self.get_account(id)[3]
         balance = old_balance + delta
         self.cursor.execute(
-            'update bank_accounts set balance=%s where account_id=%s', ((balance, account_id)))
+            'update bank_accounts set balance=%s where id=%s', ((balance, id)))
         self.conn.commit()
