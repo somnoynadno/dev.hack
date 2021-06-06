@@ -6,6 +6,8 @@ from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_cors import cross_origin
 
+from kafka_daemon import runner
+
 app = Flask(__name__)
 cors = CORS(app)
 
@@ -83,4 +85,14 @@ def add_money():
 
 
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port="6666", debug=True)
+    class KafkaCollector(object):
+        def __init__(self):
+            thread = threading.Thread(target=self.run, args=())
+            thread.daemon = True                            # Daemonize thread
+            thread.start()                                  # Start the execution
+
+        def run(self):
+            runner()
+
+    daemon = KafkaCollector()
+    app.run(host="0.0.0.0", port="6666", debug=True)
