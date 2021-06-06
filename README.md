@@ -2,6 +2,9 @@
 
 Bank core processing in a microservice architecture.
 
+![Screenshot at 2021-06-06 14-43-10](https://user-images.githubusercontent.com/46386987/120916854-8051b100-c69b-11eb-9a5a-e9d158fb5d0e.png)
+
+
 ## Services
 
 - **AccountAPI** - users and administrators
@@ -38,12 +41,12 @@ To deploy your own service:
   "comission":0,
   "docx_filepath": "",
   "amount_of_hold": 0,
-  "type": "SomeEnumValue",
+  "type": "SomeEnumValue", 
   "status": "SomeEnumValue"
 }
 ```
-type, status - enum value
-amount_of_hold - will be added to account_from in case of rollback
+- **type** and **status** - enum value
+- **amount_of_hold** - will be added to account_from in case of rollback
 
 ### CI/CD
 
