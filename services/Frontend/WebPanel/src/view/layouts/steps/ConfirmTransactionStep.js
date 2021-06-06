@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Button, Form, Input, InputNumber} from "antd";
+import {Button, Form, Input} from "antd";
 import {transactionAPI} from "../../../http/TransactionAPI";
 
 
@@ -19,7 +19,7 @@ export const ConfirmTransactionStep = (props) => {
 
     const sendVerificationCode = () => {
         transactionAPI.ConfirmTransaction(transactionID, code, props.transaction).then((r) => {
-            props.transactionConfirmedCallback(Object.assign(props.transaction, {id: transactionID}));
+            props.transactionConfirmedCallback(Object.assign(props.transaction, {id: transactionID, timestamp: Date.now()}));
         }).catch((err) => {
             setWrongCode(true);
         });
@@ -37,14 +37,15 @@ export const ConfirmTransactionStep = (props) => {
             {JSON.stringify(props.transaction, null, "\t")}
             </pre>
             <br/>
-            <Button disable={transactionID === null ? true : false} onClick={() => createConfirmationRequest()}>Подтвердить</Button>
+            <Button disable={transactionID === null ? true : false}
+                    onClick={() => createConfirmationRequest()}>Подтвердить</Button>
             {
                 transactionID ?
                     <Form style={{marginTop: 10}} onValuesChange={onFormLayoutChange}>
                         <h4>Введите код подтверждения</h4>
                         <h6>Он был отправлен на ваш телефон</h6>
                         <Form.Item validateStatus={wrongCode ? 'error' : 'success'} style={{maxWidth: 180}}
-                            name="code" label="Код">
+                                   name="code" label="Код">
                             <Input/>
                         </Form.Item>
                         <Button onClick={() => sendVerificationCode()}>Продолжить</Button>

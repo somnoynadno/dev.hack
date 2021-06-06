@@ -9,6 +9,7 @@ import (
 	"errors"
 	"github.com/gorilla/mux"
 	log "github.com/sirupsen/logrus"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"net/http"
 	"strconv"
@@ -62,9 +63,11 @@ var GetTransactionsByBankAccountID = func(w http.ResponseWriter, r *http.Request
 	}
 
 	if result != nil {
-		var transactions []models.Transaction
-		_ = result.All(context.TODO(), transactions)
-		_ = result.Decode(transactions)
+		var transactions []bson.M
+		err = result.All(context.TODO(), &transactions)
+		if err != nil {
+			u.HandleInternalError(w, err)
+		}
 
 		res, _ := json.Marshal(transactions)
 		u.RespondJSON(w, res)
