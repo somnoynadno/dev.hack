@@ -11,7 +11,9 @@ filename_length = 16
 
 def create_operation_status_docx(account_from, account_to, currency_code_from, currency_code_to, currency_value_from, currency_value_to, status, comission, filename):
     document = Document()
-    document.add_heading('ПСБ-Банк', 0)
+    t = document.add_heading('ПСБ-Банк', 0)
+    p = t.add_run()
+    p.add_picture('logo.png', width=Inches(0.25))
     document.add_paragraph(f'Счет списания: {account_from}')
     document.add_paragraph(f'Счет получения: {account_to}')
     document.add_paragraph(f'Списано: {currency_value_from} {currency_code_from}')
@@ -23,5 +25,4 @@ def create_operation_status_docx(account_from, account_to, currency_code_from, c
 
 def generate_random_filename():
     return ''.join(random.choices(string.ascii_letters + string.digits, k=filename_length))+'.docx'
-    
 
