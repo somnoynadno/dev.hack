@@ -1,5 +1,6 @@
 flask>=1.1.1
 gunicorn
 redis
+kafka-python
 Flask-Cors==3.0.10
 prometheus-client==0.9.0

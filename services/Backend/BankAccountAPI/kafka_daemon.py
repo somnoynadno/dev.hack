@@ -20,7 +20,8 @@ for message in consumer:
             db.update_balance(trans_dict["currency_amount_to"], trans_dict["account_id_to"])
             trans_dict["status"] = "AwaitingForReceiptGeneration"
             producer.send(success_topic, key=trans_key, value=json.dumps(trans_dict).encode())
-    except Exception:
+    except Exception as e:
+        print(e)
         trans_dict["status"] = "TransactionFailed"
         producer.send(fail_topic, key=trans_key, value=json.dumps(trans_dict).encode())
     print(trans_dict["status"])
